@@ -4,7 +4,7 @@ import Head from "next/head";
 
 const Home: NextPage = () => {
   const session = useSession();
-
+  console.log(session);
   return (
     <div>
       <Head>
