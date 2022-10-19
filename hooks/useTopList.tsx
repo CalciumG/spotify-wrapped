@@ -1,25 +1,21 @@
 import { TopListProps } from "components/ListWithImage";
+import { useSpotifyOptionsContext } from "context/spotifyOptionsContext";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { ISession } from "types/ISession";
-import { ItemsOf } from "utils/utilityTypes";
 import useSpotify from "./useSpotify";
 
-export const timeRange = ["short_term", "medium_term", "long_term"] as const;
-export type TimeRange = ItemsOf<typeof timeRange>;
-
-export const useTopArtists = (timeRange: TimeRange) => {
-  const [isTopAristListLoaded, setTopAristListLoaded] = useState(false);
+export const useTopList = () => {
+  const { period } = useSpotifyOptionsContext();
   const [topArtists, setTopArtists] = useState<TopListProps>();
-  const [isTopTracksListLoaded, setTopTracksListLoaded] = useState(false);
   const [topTracks, setTopTracks] = useState<TopListProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const session = useSession() as unknown as ISession;
   const spotifyApi = useSpotify();
 
   const fetchAritsts = async () => {
     const result = await spotifyApi.getMyTopArtists({
-      time_range: "long_term",
+      time_range: period.timeframe,
     });
     let trimmed: TopListProps = {
       title: "Top Artists",
@@ -35,7 +31,7 @@ export const useTopArtists = (timeRange: TimeRange) => {
 
   const fetchTracks = async () => {
     const result = await spotifyApi.getMyTopTracks({
-      time_range: "long_term",
+      time_range: period.timeframe,
     });
     let trimmed: TopListProps = {
       title: "Top Tracks",
@@ -49,20 +45,14 @@ export const useTopArtists = (timeRange: TimeRange) => {
     setTopTracks(trimmed);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     if (!session.data) return;
-    setTopAristListLoaded(false);
     spotifyApi.setAccessToken(session.data.user.accessToken);
-    fetchAritsts()
-      .then(() => setTopAristListLoaded(true))
-      .catch((err) => console.log(err));
+    fetchAritsts().catch((err) => console.log(err));
     fetchTracks()
-      .then(() => setTopTracksListLoaded(true))
-      .catch((err) => console.log(err));
-    if (!isTopAristListLoaded && !isTopTracksListLoaded) {
-      setIsLoading(true);
-    }
-  }, [session.data]);
+      .catch((err) => console.log(err))
+      .then(() => setIsLoading(false));
+  }, [session.data, period]);
 
   return { topArtists, topTracks, isLoading };
 };

@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Session } from "next-auth";
+import { SpotifyOptionsProvider } from "context/spotifyOptionsContext";
 
 function App({
   Component,
@@ -11,7 +12,9 @@ function App({
 }>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <Component {...pageProps} />
+      <SpotifyOptionsProvider>
+        <Component {...pageProps} />
+      </SpotifyOptionsProvider>
     </SessionProvider>
   );
 }

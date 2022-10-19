@@ -1,19 +1,23 @@
 import { ListWithImage } from "components/ListWithImage";
 import { Loader } from "components/Loader";
-import { useTopArtists } from "hooks/useTopArtists";
+import { TimePeriodSelect } from "components/TimePeriodSelect";
+import { useTopList } from "hooks/useTopList";
 
 const Dashboard = () => {
-  const { isLoading, topArtists, topTracks } = useTopArtists("long_term");
+  const { isLoading, topArtists, topTracks } = useTopList();
 
   return (
     <div>
-      {!isLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
-        <div className="flex">
-          <ListWithImage {...topArtists} />
-          <ListWithImage {...topTracks} />
-        </div>
+        <>
+          <TimePeriodSelect />
+          <div className="flex">
+            <ListWithImage {...topArtists} />
+            <ListWithImage {...topTracks} />
+          </div>
+        </>
       )}
     </div>
   );
