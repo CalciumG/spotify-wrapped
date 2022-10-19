@@ -1,41 +1,21 @@
-import { ListWithImage, TopListProps } from "components/ListWithImage";
+import { ListWithImage } from "components/ListWithImage";
 import { Loader } from "components/Loader";
-import useSpotify from "hooks/useSpotify";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { ISession } from "types/ISession";
+import { useTopArtists } from "hooks/useTopArtists";
 
 const Dashboard = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [topArtists, setTopArtists] = useState<TopListProps>();
-  const session = useSession() as unknown as ISession;
-  const spotifyApi = useSpotify();
-
-  const fetchAritsts = async () => {
-    const result = await spotifyApi.getMyTopArtists({
-      time_range: "long_term",
-    });
-    let trimmed: TopListProps = {
-      title: "Top Artists",
-      data: result.body.items.map((item) => {
-        return {
-          imageUrl: item.images[2].url,
-          name: item.name,
-        };
-      }),
-    };
-    setTopArtists(trimmed);
-  };
-
-  useEffect(() => {
-    if (!session.data) return;
-    setIsLoaded(false);
-    spotifyApi.setAccessToken(session.data.user.accessToken);
-    fetchAritsts().then(() => setIsLoaded(true));
-  }, [session.data]);
+  const { isLoading, topArtists, topTracks } = useTopArtists("long_term");
 
   return (
-    <div>{!isLoaded ? <Loader /> : <ListWithImage {...topArtists} />}</div>
+    <div>
+      {!isLoading ? (
+        <Loader />
+      ) : (
+        <div className="flex">
+          <ListWithImage {...topArtists} />
+          <ListWithImage {...topTracks} />
+        </div>
+      )}
+    </div>
   );
 };
 
