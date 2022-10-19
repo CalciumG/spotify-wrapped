@@ -19,8 +19,8 @@ export const TimePeriodSelect = () => {
   const { period, setPeriod } = useSpotifyOptionsContext();
 
   return (
-    <div className="flex items-center justify-center p-12">
-      <div className="w-full max-w-xs mx-auto">
+    <div className="flex items-center justify-center p-6">
+      <div className="mx-auto w-full max-w-xs">
         <Listbox
           as="div"
           className="space-y-1"
@@ -29,16 +29,16 @@ export const TimePeriodSelect = () => {
         >
           {({ open }) => (
             <>
-              <Listbox.Label className="block text-sm leading-5 font-medium text-gray-700">
+              <Listbox.Label className="block text-sm font-medium leading-5 text-horrid-green">
                 Time Range
               </Listbox.Label>
               <div className="relative">
                 <span className="inline-block w-full rounded-md shadow-sm">
-                  <Listbox.Button className="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                  <Listbox.Button className="focus:shadow-outline-blue relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
                     <span className="block truncate capitalize">
                       {period.label}
                     </span>
-                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <svg
                         className="h-5 w-5 text-gray-400"
                         viewBox="0 0 20 20"
@@ -65,7 +65,7 @@ export const TimePeriodSelect = () => {
                 >
                   <Listbox.Options
                     static
-                    className="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
+                    className="shadow-xs max-h-60 overflow-auto rounded-md py-1 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5"
                   >
                     {periodOptions.map((opt) => (
                       <Listbox.Option key={opt.label} value={opt}>
@@ -73,9 +73,9 @@ export const TimePeriodSelect = () => {
                           <div
                             className={`${
                               active
-                                ? "text-white bg-blue-600"
+                                ? "bg-blue-600 text-white"
                                 : "text-gray-900"
-                            } cursor-default select-none relative py-2 pl-8 pr-4`}
+                            } relative cursor-default select-none py-2 pl-8 pr-4`}
                           >
                             <span
                               className={`${

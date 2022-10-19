@@ -34,7 +34,7 @@ export const useTopList = () => {
       time_range: period.timeframe,
     });
     let trimmed: TopListProps = {
-      title: "Top Tracks",
+      title: "Top Songs",
       data: result.body.items.map((item: any) => {
         return {
           imageUrl: item.album.images[2].url,

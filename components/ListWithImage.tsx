@@ -14,7 +14,7 @@ export const ListWithImage: React.FC<TopListProps> = ({ title, data }) => {
         {data &&
           data?.map((item) => (
             <li
-              className="flex items-center mx-4 my-2 child:pl-2 text-xl"
+              className="flex w-screen items-center px-4 py-2 text-xl child:pl-2 lg:w-[400px]"
               key={item.name}
             >
               <img alt="ally" src={item.imageUrl} height={75} width={75} />
