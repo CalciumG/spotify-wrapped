@@ -19,7 +19,7 @@ export const useTopList = () => {
     });
     let trimmed: TopListProps = {
       title: "Top Artists",
-      data: result.body.items.map((item) => {
+      data: result.body.items.map((item: SpotifyApi.ArtistObjectFull) => {
         return {
           imageUrl: item.images[2].url,
           name: item.name,
