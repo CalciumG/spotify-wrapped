@@ -37,7 +37,7 @@ export const useTopList = () => {
       title: "Top Tracks",
       data: result.body.items.map((item: any) => {
         return {
-          imageUrl: item.album.images[0].url,
+          imageUrl: item.album.images[2].url,
           name: item.name,
         };
       }),
@@ -48,10 +48,9 @@ export const useTopList = () => {
   useMemo(() => {
     if (!session.data) return;
     spotifyApi.setAccessToken(session.data.user.accessToken);
-    fetchAritsts().catch((err) => console.log(err));
-    fetchTracks()
-      .catch((err) => console.log(err))
-      .then(() => setIsLoading(false));
+    Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
+      setIsLoading(false);
+    });
   }, [session.data, period]);
 
   return { topArtists, topTracks, isLoading };
