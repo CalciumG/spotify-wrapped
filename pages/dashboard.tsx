@@ -16,7 +16,7 @@ const Dashboard = () => {
           <TimePeriodSelect />
           <Tab.Group>
             <Tab.List>
-              <div className="flex w-full items-center justify-center text-horrid-green child:px-6">
+              <div className="flex w-full items-center justify-center text-xl text-horrid-green child:px-6">
                 <Tab>Top Artists</Tab>
                 <Tab>Top Songs</Tab>
               </div>

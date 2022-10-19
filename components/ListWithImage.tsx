@@ -9,16 +9,16 @@ export type TopListProps = {
 export const ListWithImage: React.FC<TopListProps> = ({ title, data }) => {
   return (
     <div>
-      <h2 className="p-6 text-3xl font-bold">{title}</h2>
+      <h2 className="py-6 text-3xl font-bold">{title}</h2>
       <ol>
         {data &&
           data?.map((item) => (
             <li
-              className="flex w-screen items-center px-4 py-2 text-xl child:pl-2 lg:w-[400px]"
+              className="flex w-[300px] items-center py-2 text-lg child:pl-2 sm:max-w-xs"
               key={item.name}
             >
               <img alt="ally" src={item.imageUrl} height={75} width={75} />
-              <p>{item.name}</p>
+              <p className="line-clamp-2">{item.name}</p>
             </li>
           ))}
       </ol>
