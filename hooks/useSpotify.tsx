@@ -1,15 +1,13 @@
 import SpotifyApi from "lib/spotify";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 function useSpotify() {
   const { data: session, status } = useSession();
-
   useEffect(() => {
     if (session) {
       if (session.error === "Refresh failed") {
-        signIn();
-        return;
+        signIn("spotify", { callbackUrl: "/dashboard" });
       }
 
       SpotifyApi.setAccessToken((session.user as any).accessToken);

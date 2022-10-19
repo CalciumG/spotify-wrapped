@@ -13,7 +13,6 @@ export const refreshToken = async (token: any) => {
     body: `grant_type=refresh_token&refresh_token=${token.refreshToken}`,
   });
   const data = await res.json();
-  console.log("refreshed");
 
   return {
     ...token,
@@ -37,6 +36,9 @@ export default NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: "/dashboard",
+  },
   callbacks: {
     async jwt({ token, account }: any) {
       if (account) {

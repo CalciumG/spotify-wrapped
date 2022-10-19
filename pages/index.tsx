@@ -1,48 +1,8 @@
+import { Login } from "components/Login";
 import type { NextPage } from "next";
-import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
-import SpotifyWebApi from "spotify-web-api-node";
-import { ISession } from "types/ISession";
-
-const spotifyApi = new SpotifyWebApi();
-
-export type TopListProps = {
-  title?: string | undefined;
-  data?: {
-    imageUrl: string;
-    name: string;
-  }[];
-};
 
 const Home: NextPage = () => {
-  const [topArtists, setTopArtists] = useState<TopListProps>();
-  const session = useSession() as unknown as ISession;
-  console.log(session);
-
-  const fetchAritsts = async () => {
-    const result = await spotifyApi.getMyTopArtists({
-      time_range: "long_term",
-    });
-    let trimmed: TopListProps = {
-      title: "Top Artists",
-      data: result.body.items.map((item) => {
-        return {
-          imageUrl: item.images[0].url,
-          name: item.name,
-        };
-      }),
-    };
-    setTopArtists(trimmed);
-  };
-
-  useEffect(() => {
-    if (!session.data) return;
-    spotifyApi.setAccessToken(session.data.user.accessToken);
-    fetchAritsts();
-  }, [session.data]);
-
-  console.log(topArtists);
   return (
     <div>
       <Head>
@@ -52,55 +12,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1>
-          Hello{" "}
-          {session.status === "authenticated"
-            ? session.data.user?.name || "friend"
-            : "stranger"}
-        </h1>
-        <p>
-          {session.status === "authenticated" ? (
-            <button type="button" onClick={() => signOut()}>
-              Sign out {session.data.user?.email}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => signIn("spotify")}
-              disabled={session.status === "loading"}
-            >
-              Sign in with Spotify
-            </button>
-          )}
-        </p>
-        <div>
-          <h2 className="p-6 text-3xl font-bold">{topArtists?.title}</h2>
-          <ol>
-            {topArtists?.data &&
-              topArtists!.data?.map((item) => (
-                <li
-                  className="flex items-center mx-4 my-2 child:pl-2 text-xl"
-                  key={item.name}
-                >
-                  <img alt="ally" src={item.imageUrl} height={75} width={75} />
-                  <p>{item.name}</p>
-                </li>
-              ))}
-          </ol>
-        </div>
+        <Login />
       </main>
     </div>
   );
 };
 
 export default Home;
-
-export const getServerSideProps = async () => {
-  const providers = await getProviders();
-
-  return {
-    props: {
-      providers,
-    },
-  };
-};
