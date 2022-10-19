@@ -13,29 +13,15 @@ export const Login = () => {
   }, [session.data]);
 
   return (
-    <div>
-      <p>
-        {/* {session.status === "authenticated" ? (
-          <button type="button" onClick={() => signOut()}>
-            Sign out {session.data.user?.email}
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => signIn("spotify", { callbackUrl: "/" })}
-            disabled={session.status === "loading"}
-          >
-            Sign in
-          </button>
-        )} */}
-        <button
-          type="button"
-          onClick={() => signIn("spotify", { callbackUrl: "/dashboard" })}
-          disabled={session.status === "loading"}
-        >
-          Sign in
-        </button>
-      </p>
+    <div className="flex h-screen items-center justify-center bg-painful-blue">
+      <button
+        className="rounded-full border-2 border-black bg-green-600 p-4 px-12 text-2xl font-bold text-white hover:bg-green-500 active:bg-green-500"
+        type="button"
+        onClick={() => signIn("spotify", { callbackUrl: "/dashboard" })}
+        disabled={session.status === "loading"}
+      >
+        Sign in
+      </button>
     </div>
   );
 };
