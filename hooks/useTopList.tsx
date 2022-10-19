@@ -35,7 +35,7 @@ export const useTopList = () => {
     });
     let trimmed: TopListProps = {
       title: "Top Tracks",
-      data: result.body.items.map((item) => {
+      data: result.body.items.map((item: any) => {
         return {
           imageUrl: item.album.images[0].url,
           name: item.name,
