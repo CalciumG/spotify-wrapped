@@ -1,7 +1,7 @@
 import { TopListProps } from "components/ListWithImage";
 import { useSpotifyOptionsContext } from "context/spotifyOptionsContext";
 import { useSession } from "next-auth/react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ISession } from "types/ISession";
 import useSpotify from "./useSpotify";
 import Router from "next/router";
@@ -14,22 +14,15 @@ export const useTopList = () => {
   const session = useSession() as unknown as ISession;
   const spotifyApi = useSpotify();
   const [error, setError] = useState(false);
-
   // TODO store all periods to avoid unnecessary fetches
 
-  async function errorCheck(session: ISession) {
-    const url = "https://api.spotify.com/v1/me";
-    const headers = {
-      Authorization: "Bearer " + session.data.user.accessToken,
-    };
-
-    fetch(url, { headers })
-      .then((response) => response.json())
-      .catch(() => {
-        setError(true);
-        Router.push("/error");
-      });
-  }
+  useEffect(() => {
+    if (window.location.href.includes("error=OAuthCallback")) {
+      console.log("have I been hit");
+      setError(true);
+      Router.push("/error");
+    }
+  }, []);
 
   const fetchAritsts = async () => {
     const result = await spotifyApi.getMyTopArtists({
@@ -66,13 +59,10 @@ export const useTopList = () => {
   useMemo(() => {
     if (!session.data) return;
     spotifyApi.setAccessToken(session.data.user.accessToken);
-    errorCheck(session);
-
-    if (!error) {
+    if (!error)
       Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
         setIsLoading(false);
       });
-    }
   }, [session.data, period]);
 
   return { topArtists, topTracks, isLoading };
