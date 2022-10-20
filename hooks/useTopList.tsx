@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState, useMemo } from "react";
 import { ISession } from "types/ISession";
 import useSpotify from "./useSpotify";
+import Router from "next/router";
 
 export const useTopList = () => {
   const { period } = useSpotifyOptionsContext();
@@ -12,6 +13,23 @@ export const useTopList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const session = useSession() as unknown as ISession;
   const spotifyApi = useSpotify();
+  const [error, setError] = useState(false);
+
+  // TODO store all periods to avoid unnecessary fetches
+
+  async function errorCheck(session: ISession) {
+    const url = "https://api.spotify.com/v1/me";
+    const headers = {
+      Authorization: "Bearer " + session.data.user.accessToken,
+    };
+
+    fetch(url, { headers })
+      .then((response) => response.json())
+      .catch(() => {
+        setError(true);
+        Router.push("/error");
+      });
+  }
 
   const fetchAritsts = async () => {
     const result = await spotifyApi.getMyTopArtists({
@@ -48,9 +66,13 @@ export const useTopList = () => {
   useMemo(() => {
     if (!session.data) return;
     spotifyApi.setAccessToken(session.data.user.accessToken);
-    Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
-      setIsLoading(false);
-    });
+    errorCheck(session);
+
+    if (!error) {
+      Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
+        setIsLoading(false);
+      });
+    }
   }, [session.data, period]);
 
   return { topArtists, topTracks, isLoading };
