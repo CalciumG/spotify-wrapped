@@ -1,5 +1,5 @@
 import useSpotify from "hooks/useSpotify";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { ISession } from "types/ISession";
 
