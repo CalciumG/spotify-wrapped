@@ -18,7 +18,6 @@ export const useTopList = () => {
 
   useEffect(() => {
     if (window.location.href.includes("error=OAuthCallback")) {
-      console.log("have I been hit");
       setError(true);
       Router.push("/error");
     }
