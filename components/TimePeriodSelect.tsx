@@ -12,7 +12,7 @@ export type TimePeriodSelectProps = {
 const periodOptions: TimePeriodSelectProps[] = [
   { timeframe: "short_term", label: "Last 4 weeks" },
   { timeframe: "medium_term", label: "Last 6 months" },
-  { timeframe: "long_term", label: "Last 2 years" },
+  { timeframe: "long_term", label: "Several years" },
 ];
 
 export const TimePeriodSelect = () => {
@@ -29,7 +29,7 @@ export const TimePeriodSelect = () => {
         >
           {({ open }) => (
             <>
-              <Listbox.Label className="block text-sm font-medium leading-5 text-horrid-green">
+              <Listbox.Label className="block text-lg font-medium leading-5 text-horrid-green">
                 Time Range
               </Listbox.Label>
               <div className="relative">
