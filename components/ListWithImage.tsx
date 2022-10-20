@@ -20,11 +20,11 @@ export const ListWithImage: React.FC<TopListProps> = ({ title, data }) => {
               <img
                 alt={item.name}
                 src={item.imageUrl}
-                height={70}
-                width={70}
+                height={64}
+                width={64}
                 className="shadow-xl"
               />
-              <p className="pl-2 line-clamp-2">{item.name}</p>
+              <p className="pl-2">{item.name}</p>
             </li>
           ))}
       </ol>
