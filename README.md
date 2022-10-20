@@ -1,6 +1,6 @@
 # Spotify Wrapped
 
-This won't work without email addresses being whitelisted for now. 
+Spotify won't let this won't work without email addresses being whitelisted for now.
 
 # Next.js + Tailwind CSS Example
 
