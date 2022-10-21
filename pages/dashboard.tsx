@@ -1,11 +1,11 @@
 import { ListWithImage } from "components/ListWithImage";
 import { Loader } from "components/Loader";
 import { TimePeriodSelect } from "components/TimePeriodSelect";
-import { useTopList } from "hooks/useTopList";
 import { Tab } from "@headlessui/react";
+import { useTopArtists } from "hooks/useTopArtists";
 
 const Dashboard = () => {
-  const { isLoading, topArtists, topTracks } = useTopList();
+  const { isLoading, resultInPeriod } = useTopArtists();
 
   return (
     <div className="bg-painful-blue">
@@ -24,11 +24,11 @@ const Dashboard = () => {
             <Tab.Panels>
               <div className="flex items-center justify-center text-horrid-green">
                 <Tab.Panel>
-                  <ListWithImage {...topArtists} />
+                  <ListWithImage
+                    {...(resultInPeriod as SpotifyApi.UsersTopArtistsResponse)}
+                  />
                 </Tab.Panel>
-                <Tab.Panel>
-                  <ListWithImage {...topTracks} />
-                </Tab.Panel>
+                <Tab.Panel>{/* <ListWithImage {...topTracks} /> */}</Tab.Panel>
               </div>
             </Tab.Panels>
           </Tab.Group>

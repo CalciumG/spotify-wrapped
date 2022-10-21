@@ -5,6 +5,13 @@ import { useState, useMemo, useEffect } from "react";
 import { ISession } from "types/ISession";
 import useSpotify from "./useSpotify";
 import Router from "next/router";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 export const useTopList = () => {
   const { period } = useSpotifyOptionsContext();
@@ -23,46 +30,52 @@ export const useTopList = () => {
     }
   }, []);
 
-  const fetchAritsts = async () => {
-    const result = await spotifyApi.getMyTopArtists({
-      time_range: period.timeframe,
-    });
-    let trimmed: TopListProps = {
-      title: "Top Artists",
-      data: result.body.items.map((item: any) => {
-        return {
-          imageUrl: item.images[2].url,
-          name: item.name,
-        };
-      }),
-    };
-    setTopArtists(trimmed);
-  };
+  // const fetchAritsts = async () => {
+  //   const result = await spotifyApi.getMyTopArtists({
+  //     time_range: period.timeframe,
+  //   });
+  //   let trimmed: TopListProps = {
+  //     title: "Top Artists",
+  //     data: result.body.items.map((item: any) => {
+  //       return {
+  //         imageUrl: item.images[2].url,
+  //         name: item.name,
+  //       };
+  //     }),
+  //   };
+  //   setTopArtists(trimmed);
+  // };
 
-  const fetchTracks = async () => {
-    const result = await spotifyApi.getMyTopTracks({
-      time_range: period.timeframe,
-    });
-    let trimmed: TopListProps = {
-      title: "Top Songs",
-      data: result.body.items.map((item: any) => {
-        return {
-          imageUrl: item.album.images[2].url,
-          name: item.name,
-        };
-      }),
-    };
-    setTopTracks(trimmed);
-  };
+  // const fetchTracks = async () => {
+  //   const result = await spotifyApi.getMyTopTracks({
+  //     time_range: period.timeframe,
+  //   });
+  //   let trimmed: TopListProps = {
+  //     title: "Top Songs",
+  //     data: result.body.items.map((item: any) => {
+  //       return {
+  //         imageUrl: item.album.images[2].url,
+  //         name: item.name,
+  //       };
+  //     }),
+  //   };
+  //   setTopTracks(trimmed);
+  // };
 
   useMemo(() => {
     if (!session.data) return;
     spotifyApi.setAccessToken(session.data.user.accessToken);
-    if (!error)
-      Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
-        setIsLoading(false);
-      });
+    // if (!error)
+    //   Promise.all([fetchAritsts(), fetchTracks()]).then(() => {
+    //     setIsLoading(false);
+    //   });
   }, [session.data, period]);
 
-  return { topArtists, topTracks, isLoading };
+  const cal = useQuery(["topArtists"], async () => {
+    return await spotifyApi.getMyTopArtists({
+      time_range: period.timeframe,
+    });
+  });
+
+  return { topArtists, topTracks, isLoading, cal };
 };

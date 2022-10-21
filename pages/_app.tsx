@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Session } from "next-auth";
 import { SpotifyOptionsProvider } from "context/spotifyOptionsContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App({
   Component,
@@ -11,11 +12,13 @@ function App({
   session: Session;
 }>) {
   return (
-    <SessionProvider session={pageProps.session}>
-      <SpotifyOptionsProvider>
-        <Component {...pageProps} />
-      </SpotifyOptionsProvider>
-    </SessionProvider>
+    <QueryClientProvider client={new QueryClient()}>
+      <SessionProvider session={pageProps.session}>
+        <SpotifyOptionsProvider>
+          <Component {...pageProps} />
+        </SpotifyOptionsProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }
 
