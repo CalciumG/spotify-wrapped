@@ -6,24 +6,13 @@ export type TopListProps = {
   }[];
 };
 
-export const ListWithImage: React.FC<SpotifyApi.UsersTopArtistsResponse> = ({
-  items,
-}) => {
-  const trimmed: TopListProps = {
-    title: "Top Artists",
-    data: items.map((item) => {
-      return {
-        imageUrl: item.images[2].url,
-        name: item.name,
-      };
-    }),
-  };
+export const ListWithImage: React.FC<TopListProps> = ({ title, data }) => {
   return (
     <div>
-      <h2 className="py-6 text-3xl font-bold">{trimmed.title}</h2>
+      <h2 className="py-6 text-3xl font-bold">{title}</h2>
       <ol>
-        {trimmed.data &&
-          trimmed.data?.map((item) => (
+        {data &&
+          data?.map((item) => (
             <li
               className="flex w-[300px] items-center py-2 text-lg sm:max-w-xs"
               key={item.name}

@@ -4,16 +4,16 @@ import { useSpotifyOptionsContext } from "context/spotifyOptionsContext";
 import useSpotify from "hooks/useSpotify";
 import { useMemo } from "react";
 
-export const useTopArtists = () => {
+export const useTopSongs = () => {
   const spotifyApi = useSpotify();
   const { period } = useSpotifyOptionsContext();
 
   const results = useQueries({
     queries: [
       {
-        queryKey: ["topArtists", "short_term"],
+        queryKey: ["topSongs", "short_term"],
         queryFn: async () => {
-          const res = await spotifyApi.getMyTopArtists({
+          const res = await spotifyApi.getMyTopTracks({
             time_range: "short_term",
           });
           return {
@@ -23,9 +23,9 @@ export const useTopArtists = () => {
         },
       },
       {
-        queryKey: ["topArtists", "medium_term"],
+        queryKey: ["topSongs", "medium_term"],
         queryFn: async () => {
-          const res = await spotifyApi.getMyTopArtists({
+          const res = await spotifyApi.getMyTopTracks({
             time_range: "medium_term",
           });
           return {
@@ -35,9 +35,9 @@ export const useTopArtists = () => {
         },
       },
       {
-        queryKey: ["topArtists", "long_term"],
+        queryKey: ["topSongs", "long_term"],
         queryFn: async () => {
-          const res = await spotifyApi.getMyTopArtists({
+          const res = await spotifyApi.getMyTopTracks({
             time_range: "long_term",
           });
           return {
@@ -55,11 +55,11 @@ export const useTopArtists = () => {
     (result) => result.data?.time === period.timeframe
   )?.data;
 
-  const topArtistsInPeriod: TopListProps = {
-    title: "Top Artists",
-    data: result?.items.map((item) => {
+  let topSongsInPeriod: TopListProps = {
+    title: "Top Songs",
+    data: result?.items.map((item: any) => {
       return {
-        imageUrl: item.images[2].url,
+        imageUrl: item.album.images[2].url,
         name: item.name,
       };
     }),
@@ -68,7 +68,7 @@ export const useTopArtists = () => {
   return useMemo(
     () => ({
       isLoading,
-      topArtistsInPeriod,
+      topSongsInPeriod,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isLoading, result]

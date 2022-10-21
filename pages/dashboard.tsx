@@ -3,13 +3,23 @@ import { Loader } from "components/Loader";
 import { TimePeriodSelect } from "components/TimePeriodSelect";
 import { Tab } from "@headlessui/react";
 import { useTopArtists } from "hooks/useTopArtists";
+import { useTopSongs } from "hooks/useTopSongs";
+import { useEffect } from "react";
+import Router from "next/router";
 
 const Dashboard = () => {
-  const { isLoading, resultInPeriod } = useTopArtists();
+  const { isLoading: artistsLoading, topArtistsInPeriod } = useTopArtists();
+  const { isLoading: songsLoading, topSongsInPeriod } = useTopSongs();
+
+  useEffect(() => {
+    if (window.location.href.includes("error=OAuthCallback")) {
+      Router.push("/error");
+    }
+  }, []);
 
   return (
     <div className="bg-painful-blue">
-      {isLoading ? (
+      {artistsLoading || songsLoading ? (
         <Loader />
       ) : (
         <>
@@ -24,11 +34,11 @@ const Dashboard = () => {
             <Tab.Panels>
               <div className="flex items-center justify-center text-horrid-green">
                 <Tab.Panel>
-                  <ListWithImage
-                    {...(resultInPeriod as SpotifyApi.UsersTopArtistsResponse)}
-                  />
+                  <ListWithImage {...topArtistsInPeriod} />
                 </Tab.Panel>
-                <Tab.Panel>{/* <ListWithImage {...topTracks} /> */}</Tab.Panel>
+                <Tab.Panel>
+                  <ListWithImage {...topSongsInPeriod} />
+                </Tab.Panel>
               </div>
             </Tab.Panels>
           </Tab.Group>
