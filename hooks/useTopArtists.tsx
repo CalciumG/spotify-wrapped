@@ -1,6 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import { useSpotifyOptionsContext } from "context/spotifyOptionsContext";
 import useSpotify from "hooks/useSpotify";
+import { useMemo } from "react";
 
 export const useTopArtists = () => {
   const spotifyApi = useSpotify();
@@ -53,8 +54,11 @@ export const useTopArtists = () => {
     (result) => result.data?.time === period.timeframe
   )?.data;
 
-  return {
-    isLoading,
-    resultInPeriod,
-  };
+  return useMemo(
+    () => ({
+      isLoading,
+      resultInPeriod,
+    }),
+    [isLoading, resultInPeriod]
+  );
 };
