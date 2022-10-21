@@ -1,8 +1,9 @@
 import { useQueries } from "@tanstack/react-query";
-import { TopListProps } from "components/ListWithImage";
 import { useSpotifyOptionsContext } from "context/spotifyOptionsContext";
 import useSpotify from "hooks/useSpotify";
 import { useMemo } from "react";
+
+import { TopListProps } from "components/ListWithImage";
 
 export const useTopSongs = () => {
   const spotifyApi = useSpotify();

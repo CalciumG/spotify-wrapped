@@ -10,7 +10,7 @@ export const Login = () => {
   useEffect(() => {
     if (!session.data) return;
     spotifyApi.setAccessToken(session.data.user.accessToken);
-  }, [session.data]);
+  }, [session.data, spotifyApi]);
 
   return (
     <div className="flex h-screen items-center justify-center bg-painful-blue">

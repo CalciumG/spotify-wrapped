@@ -1,6 +1,7 @@
-import { TimePeriodSelectProps } from "components/TimePeriodSelect";
 import { createContext, useContext, useState } from "react";
 import { ItemsOf } from "utils/utilityTypes";
+
+import { TimePeriodSelectProps } from "components/TimePeriodSelect";
 
 export const timeRange = ["short_term", "medium_term", "long_term"] as const;
 export type TimeRange = ItemsOf<typeof timeRange>;
