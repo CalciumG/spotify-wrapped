@@ -1,11 +1,12 @@
-import { ListWithImage } from "components/ListWithImage";
-import { Loader } from "components/Loader";
-import { TimePeriodSelect } from "components/TimePeriodSelect";
 import { Tab } from "@headlessui/react";
 import { useTopArtists } from "hooks/useTopArtists";
 import { useTopSongs } from "hooks/useTopSongs";
-import { useEffect } from "react";
 import Router from "next/router";
+import { useEffect } from "react";
+
+import { ListWithImage } from "components/ListWithImage";
+import { Loader } from "components/Loader";
+import { TimePeriodSelect } from "components/TimePeriodSelect";
 
 const Dashboard = () => {
   const { isLoading: artistsLoading, topArtistsInPeriod } = useTopArtists();
