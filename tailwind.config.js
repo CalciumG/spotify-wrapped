@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "painful-blue": "#4100f5",
-        "horrid-green": "#D4f371",
+        "painful-blue": "#191414",
+        "horrid-green": "#1DB954",
       },
     },
   },
